@@ -18,8 +18,6 @@ for i in corpus:
     preprocessed_doc = gensim.utils.simple_preprocess(i, min_len = 2, max_len = 15)
     
     preprocessed_corpus.append(preprocessed_doc)
-    
-preprocessed_corpus
 
 # go line by line, removing common words
 stoplist = set('for a of the and to in'.split(' '))
