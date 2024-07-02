@@ -5,11 +5,11 @@ This repo contains code developed in June 2024 for Hawkers Madrid.
 Mission: Use Natural Language processing (NLP) to assess sentiment analysis and classify topics for customer feedback. 
 
 Data structure:
-Hevn't seen it yet
+Haven't seen it yet
 
 Expected to be semi-structured, user text submitted via forms
 
-To do:
+To do (See Project workflow):
 Figure out who would be benefiting from this, maybe talk to the customer support team and aks what kind of issues they face
 Access data, link to Git
 Determine data structure and which tools to use
