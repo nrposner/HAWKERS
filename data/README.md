@@ -16,4 +16,5 @@ Column, integer
 "DS_TITLE", title of the feedback message, often significant overlap with text but sometimes non'overlapping. May be higher density?
 "DS_TEXT", message text. Often contains line breaks which makes it difficult to read, can get quite long
 "NM_STARS_SCORE", number of stars in the review, from 1 to 5, with more stars indicating higher quality
-"DS_TEXT_TRANSLATED": DS_TEXT translated ito English. Appears to be present even if the text was originally in english 
+"DS_TEXT_TRANSLATED": DS_TEXT translated ito English. Is present even if the text was originally in english 
+
