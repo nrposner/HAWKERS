@@ -15,7 +15,8 @@ def preprocess(corpus:pd.core.series.Series, min_len:int = 3, max_len:int = 15) 
     max_len: maximum word length. No longer words will be retained
     """
     
-
+    if not (min_len <= max_len):
+        raise ValueError("make sure your minimum and maximum token lengths are not reversed")
 
     preprocessed_corpus = []
 
