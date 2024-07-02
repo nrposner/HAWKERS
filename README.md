@@ -2,7 +2,9 @@
 This repo contains code developed in June 2024 for Hawkers Madrid.
 (Last updated: 7/2/24)
 
-Mission: Use Natural Language processing (NLP) to assess sentiment analysis and classify topics for customer feedback. 
+Mission: Use Natural Language processing (NLP) to assess sentiment analysis and classify topics so that Customer Support doesnt have to do it manually
+
+In particular: desired categories include product quality, delivery service, and post-purchase service (returns, customer support, etc). Other categories are miscellaneous, but if another large cluster should be discovered and found relevant it can be added to the schema. 
 
 Data structure:
 Haven't seen it yet

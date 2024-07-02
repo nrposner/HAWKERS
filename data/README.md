@@ -10,7 +10,7 @@ Column, integer
     it: italian
     nd: dutch
     fr: french
-    en: 
+    en: english
     Total number unknown
 "ID_CUSTOMER", numeric customer id, -1 appears to indicate unknown or anonymous
 "DS_TITLE", title of the feedback message, often significant overlap with text but sometimes non'overlapping. May be higher density?
