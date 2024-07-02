@@ -1,7 +1,6 @@
 import numpy as np
 import pandas as pd
 import gensim
-from gensim import corpora, models
 from collections import defaultdict
 
 def preprocess(corpus:pd.core.series.Series, min_len:int = 3, max_len:int = 15) -> list:
