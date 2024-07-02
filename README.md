@@ -18,6 +18,7 @@ Tools:
 NLTK + TextBlob?
 
 Gensim for topic modeling will probably be our workhorse
+Note: Gensim is an unsupervised system
 
 Possibly polyglot? If we wind up not wanting to translate
 Need to check how mnay languages we're looking at
