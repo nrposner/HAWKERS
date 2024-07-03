@@ -13,12 +13,12 @@ def similarity_order(corpus_tfidf: gensim.interfaces.TransformedCorpus, dictiona
     model = mod(corpus_tfidf, id2word=dictionary, num_topics=num_topics)
 
     vec_bow = dictionary.doc2bow(query.lower().split())
-    vec_lda = model[vec_bow]  # convert the query to LSI space
+    vec_model = model[vec_bow]  # convert the query to LSI space
 
     #index these
     index = similarities.MatrixSimilarity(model[corpus_tfidf])
 
-    sims = index[vec_lda]  # perform a similarity query against the corpus
+    sims = index[vec_model]  # perform a similarity query against the corpus
     sorted_similarities = sorted(enumerate(sims), key=lambda item: -item[1])
 
     return sorted_similarities
