@@ -3,6 +3,14 @@ import pandas as pd
 import gensim
 from collections import defaultdict
 
+def corpus_extractor():
+    """Pulls out the ninth column from the dataset in order to get
+    the raw corpus which will be use din preprocessing
+    """
+    data = pd.read_csv("data/service_reviews_15000rows_translated.csv")
+    corpus = data.iloc[:, 8]
+    return corpus
+
 def preprocess(corpus:pd.core.series.Series, min_len:int = 3, max_len:int = 15) -> list:
     """ Take in a corpus of text in a pandas series and perform
     preprocessing
