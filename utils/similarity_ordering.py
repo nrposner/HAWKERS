@@ -3,7 +3,7 @@ from gensim import models, similarities
 from collections import defaultdict
 
 
-def similarity_order(corpus_tfidf, dictionary, query:str, mod, num_topics):
+def similarity_order(corpus_tfidf: gensim.interfaces.TransformedCorpus, dictionary: gensim.corpora.dictionary.Dictionary, query:str, mod, num_topics:int):
     """ Take in a tfidf corpus and dictionary created by corpus_creation,
     as well as a query such as 'customer support' and a model. 
 
