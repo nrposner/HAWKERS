@@ -23,4 +23,4 @@ def corpus_maker(processed_corpus:list):
 
     corpus_tfidf = tfidf[bow_corpus]
 
-    return corpus_tfidf
+    return corpus_tfidf, dictionary
