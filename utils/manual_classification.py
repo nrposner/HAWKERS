@@ -437,9 +437,14 @@ def mean_similarity(corpus_tfidf: gensim.interfaces.TransformedCorpus, dictionar
     
 
 
-def classification_pipeline_2(train_corpus, query_dict, mod, num_topics):
+def classification_pipeline_2(train_corpus: pd.Series, query_dict:dict, mod, num_topics:int) -> dict:
+    """We classify documents according to similarity across a collection of queries related to each topic. 
+    Each of these queries is an element of the same dataset (removed from testing) which was manually classified
+
+    Output: a dictionary containing the topics as keys and all documents classified
+    under those topics in a list as values
     
-    #query sets should bea dictionary of lists
+    """
     
     processed_corpus = preprocess(train_corpus)
     corpus_tfidf, dictionary = corpus_maker(processed_corpus)
