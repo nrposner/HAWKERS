@@ -1,5 +1,9 @@
 import numpy as np
 import pandas as pd
+import gensim
+from gensim import corpora, models, similarities
+from collections import defaultdict
+
 
 data = pd.read_csv("data/service_reviews_15000rows_translated.csv")
 
@@ -328,5 +332,138 @@ all_queries = cs_queries + ds_queries + pq_queries + mixed_queries
 
 train_list = list(data.iloc[:, 8].values)
 
-training_corpus = pd.Series([x for x in train_list if x not in all_queries])
+train_corpus = pd.Series([x for x in train_list if x not in all_queries])
 
+query_dict = {"Customer Service": cs_queries, "Delivery Service": ds_queries, "Product Quality": pq_queries, "Mixed": mixed_queries}
+
+
+
+
+#revised version
+
+def preprocess(corpus:pd.core.series.Series, min_len:int = 3, max_len:int = 15) -> list:
+    """ Take in a corpus of text in a pandas series and perform
+    preprocessing
+
+    corpus: a pandas series containing text
+
+    min_len: minimum word length. No shorter words will be retained
+
+    max_len: maximum word length. No longer words will be retained
+    """
+    
+    if not (min_len <= max_len):
+        raise ValueError("make sure your minimum and maximum token lengths are not reversed")
+
+    preprocessed_corpus = []
+
+    for i in corpus:
+        preprocessed_doc = gensim.utils.simple_preprocess(i, min_len = min_len, max_len = max_len)
+    
+        preprocessed_corpus.append(preprocessed_doc)
+
+        # go line by line, removing common words
+    stoplist = set('for a of the and to in'.split(' '))
+    texts = [[word for word in document if word not in stoplist]
+         for document in preprocessed_corpus]
+
+    # count word frequencies
+    frequency = defaultdict(int)
+    for text in texts:
+        for token in text:
+            frequency[token] += 1
+
+    # only keep words that appear more than once
+    processed_corpus = [[token for token in text if frequency[token] > 1] for text in texts]
+
+    return processed_corpus
+
+def corpus_maker(processed_corpus:list):
+    """ Take in a processed corpus from preprocessing and transform it into
+    a tfidf bag of words corpus
+    
+    """
+    # turn this into a dictionary structure
+    dictionary = corpora.Dictionary(processed_corpus)
+
+    # create a 'bag of words' corpus using that dictionary
+    bow_corpus = [dictionary.doc2bow(text) for text in processed_corpus]
+
+    # train the model
+
+    # tfidf is a transformation that finds term frequency in model frequency
+    # we will use this in order to create a structure which other models can attack more easily
+    tfidf = models.TfidfModel(bow_corpus)
+
+    corpus_tfidf = tfidf[bow_corpus]
+
+    return corpus_tfidf, dictionary
+
+def mean_similarity(corpus_tfidf: gensim.interfaces.TransformedCorpus, dictionary: gensim.corpora.dictionary.Dictionary, queries:list[str], mod, num_topics:int):
+    """ Take in a tfidf corpus and dictionary created by corpus_creation,
+    as well as a query such as 'customer support' and a model. We generate similarity scores 
+    for each document across all queries, and take the mean of all scores in each category of query. 
+
+    This remains a naive classifier, more refinement is needed. LSI model is recommended
+
+    mod: must be formatted as models.ModelName, such as models.LdaModel, or models.LsiModel
+    """
+
+    model = mod(corpus_tfidf, id2word=dictionary, num_topics=num_topics)
+    
+    
+    
+    df = pd.DataFrame(columns = queries)
+    
+    
+    #want to output a single number for each corpus element, the mean
+    #score across all queries
+    
+    for q in queries:
+        vec_bow = dictionary.doc2bow(q.lower().split())
+        vec_model = model[vec_bow]  # convert the query to LSI space
+
+        #index these
+        index = similarities.MatrixSimilarity(model[corpus_tfidf])
+
+        sims = index[vec_model]  # perform a similarity query against the corpus
+        
+        df[q] = sims
+
+        
+    scores = df.mean(axis=1)
+    
+    return scores
+    
+
+
+def classification_pipeline_2(train_corpus, query_dict, mod, num_topics):
+    
+    #query sets should bea dictionary of lists
+    
+    processed_corpus = preprocess(train_corpus)
+    corpus_tfidf, dictionary = corpus_maker(processed_corpus)
+    df = pd.DataFrame(columns = list(query_dict.keys())) ##check
+    
+    
+    for item in query_dict.items():
+        scores = mean_similarity(corpus_tfidf, dictionary, item[1], mod, num_topics)
+        df[item[0]] = scores
+    
+    
+    df["class"] = df.idxmax(axis=1)
+    df["text"] = train_corpus
+
+
+    bins = []
+    
+    for q in list(query_dict.keys()):
+        subset = df[df["class"]==q]
+        bins.append(subset["text"].values)
+
+    classes_dict = {}
+    for q, b in zip(query_dict.keys(), bins):
+        key, value = q, b
+        classes_dict[key] = value
+        
+    return classes_dict
