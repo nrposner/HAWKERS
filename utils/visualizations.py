@@ -23,7 +23,7 @@ def viz_2d(vectors, categories):
 
 
 # 3d visualization of vectors
-def viz_2d(vectors, categories):
+def viz_3d(vectors, categories):
     fig = plt.figure()
     ax = fig.add_subplot(projection='3d')
 
