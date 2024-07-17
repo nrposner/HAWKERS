@@ -55,5 +55,7 @@ def umap(vectors):
         embedding[:, 0],
         embedding[:, 1])
     ax.gca().set_aspect('equal', 'datalim')
-    ax.title('UMAP projection of the Vectors', fontsize=24);
+    ax.title('UMAP projection of the Vectors', fontsize=24)
+
+    return fig
 
