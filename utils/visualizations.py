@@ -58,4 +58,3 @@ def umap(vectors):
     ax.title('UMAP projection of the Vectors', fontsize=24)
 
     return fig
-
