@@ -12,6 +12,11 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix
 
 def logit_smote_classification(df):
+    """We take in a dataframe containing English text and categories, with one category
+    per entry. This dataframe should include uncategorized data meant to be classified
+    by the function. For these rows, the Tags column should contain np.nan. 
+    
+    """
     #initializing data source
     before_vect = df[["DS_TEXT_TRANSLATED", "Tags"]]
 
