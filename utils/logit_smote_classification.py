@@ -11,7 +11,7 @@ from sklearn.preprocessing import OneHotEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix
 
-def data_organization(df):
+def logit_smote_classification(df):
     #initializing data source
     before_vect = df[["DS_TEXT_TRANSLATED", "Tags"]]
 
